@@ -1,0 +1,163 @@
+---
+title: 3.3 - WalletContext Configuration
+description: Set up Privy, Wagmi and React Query through a WalletContext provider.
+---
+
+Create the `WalletContext.tsx` to configure Privy, Wagmi and React Query.
+
+## Create the file
+
+Create a file `src/contexts/WalletContext.tsx`:
+
+```typescript
+import React from "react";
+import { createConfig, WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { PrivyProvider } from "@privy-io/react-auth";
+import { createContext, useContext, useState } from "react";
+import { http } from "viem";
+
+const queryClient = new QueryClient();
+
+// Intuition Testnet configuration
+const intuitionTestnetChain = {
+  id: 13579,
+  name: "Intuition Testnet",
+  network: "intuition-testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "tTRUST",
+    symbol: "tTRUST",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://testnet.rpc.intuition.systems"],
+    },
+    public: {
+      http: ["https://testnet.rpc.intuition.systems"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Intuition Testnet Explorer",
+      url: "https://intuition-testnet.explorer.caldera.xyz",
+    },
+  },
+  testnet: true,
+};
+
+const wagmiConfig = createConfig({
+  chains: [intuitionTestnetChain],
+  transports: {
+    [intuitionTestnetChain.id]: http(),
+  },
+});
+
+interface WalletContextType {
+  walletConnected: boolean;
+  walletAddress: string | null;
+  setWalletConnected: React.Dispatch<React.SetStateAction<boolean>>;
+  setWalletAddress: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const WalletContext = createContext<WalletContextType | null>(null);
+
+export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+
+  return (
+    <WalletContext.Provider
+      value={{
+        walletConnected,
+        walletAddress,
+        setWalletConnected,
+        setWalletAddress,
+      }}
+    >
+      {children}
+    </WalletContext.Provider>
+  );
+};
+
+export const PrivyWalletProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <PrivyProvider
+      appId={import.meta.env.VITE_PRIVY_APP_ID}
+      config={{
+        embeddedWallets: {
+          createOnLogin: "users-without-wallets",
+          requireUserPasswordOnCreate: false,
+          showWalletUIs: true,
+        },
+        loginMethods: ["wallet", "email", "google", "twitter"],
+        appearance: {
+          theme: "dark",
+          showWalletLoginFirst: true,
+        },
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={wagmiConfig}>
+          <WalletProvider>{children}</WalletProvider>
+        </WagmiProvider>
+      </QueryClientProvider>
+    </PrivyProvider>
+  );
+};
+
+export const useWallet = () => {
+  const context = useContext(WalletContext);
+  if (!context) {
+    throw new Error("useWallet must be used within a WalletProvider");
+  }
+  return context;
+};
+```
+
+## PrivyProvider Configuration
+
+The `PrivyProvider` requires:
+
+- `appId`: Loaded from `import.meta.env.VITE_PRIVY_APP_ID`
+- `config`: Authentication configuration (embedded wallets, login methods, appearance)
+
+## WagmiProvider Configuration
+
+The `WagmiProvider` requires:
+
+- `config`: Wagmi configuration with chains and transports
+
+**Configured chain**:
+
+- **Intuition Testnet**: The only chain configured for `player-map`
+
+## React Query Configuration
+
+The `QueryClientProvider` uses a default `QueryClient` to manage asynchronous
+requests.
+
+## Using the `useWallet` hook
+
+The `useWallet` hook allows you to access the wallet context:
+
+```typescript
+const { walletConnected, walletAddress, setWalletConnected, setWalletAddress } =
+  useWallet();
+```
+
+## Integration in the app
+
+Wrap your application with `PrivyWalletProvider`:
+
+```typescript
+import { PrivyWalletProvider } from "./contexts/WalletContext";
+
+function App() {
+  return <PrivyWalletProvider>{/* Your application */}</PrivyWalletProvider>;
+}
+```

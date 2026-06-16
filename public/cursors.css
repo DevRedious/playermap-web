@@ -1,0 +1,23 @@
+/* Curseurs custom (thème « dark ») — uniquement les curseurs utiles au web.
+   Servi en statique depuis /public pour que les `url()` ne soient pas
+   supprimées par le pipeline CSS (Lightning CSS / Turbopack). */
+html {
+  cursor: url('/dark/arrow.cur'), auto;
+}
+a,
+button,
+[role='button'],
+summary,
+label[for],
+select {
+  cursor: url('/dark/hand.cur'), pointer;
+}
+input:not([type='checkbox']):not([type='radio']):not([type='range']),
+textarea,
+[contenteditable='true'] {
+  cursor: url('/dark/ibeam.cur'), text;
+}
+:disabled,
+[aria-disabled='true'] {
+  cursor: url('/dark/no.cur'), not-allowed;
+}

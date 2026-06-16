@@ -1,0 +1,44 @@
+{
+	"name": "playermap-web",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"build": "next build",
+		"dev": "next dev",
+		"start": "next start",
+		"types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+		"postinstall": "fumadocs-mdx",
+		"lint": "biome lint .",
+		"format": "biome format --write .",
+		"check": "biome check --write .",
+		"ci": "biome ci .",
+		"ci:fix": "biome check --write --unsafe ."
+	},
+	"dependencies": {
+		"@tailwindcss/typography": "^0.5.20",
+		"fumadocs-core": "16.10.2",
+		"fumadocs-mdx": "15.0.12",
+		"fumadocs-ui": "16.10.2",
+		"gray-matter": "^4.0.3",
+		"lucide-react": "^1.17.0",
+		"next": "16.2.9",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"react-markdown": "^10.1.0",
+		"remark-gfm": "^4.0.1",
+		"tailwind-merge": "^3.6.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.0",
+		"@tailwindcss/postcss": "^4.3.0",
+		"@types/mdx": "^2.0.14",
+		"@types/node": "^25.9.2",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"eslint": "^9.39.4",
+		"eslint-config-next": "16.2.9",
+		"postcss": "^8.5.15",
+		"tailwindcss": "^4.3.0",
+		"typescript": "^6.0.3"
+	}
+}

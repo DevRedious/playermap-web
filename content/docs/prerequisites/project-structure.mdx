@@ -1,0 +1,64 @@
+---
+title: 1.2 - Project Structure
+description: Recommended project structure for integrating player-map.
+---
+
+This section describes the recommended project structure for integrating
+`player-map`.
+
+## Recommended file structure
+
+```
+src/
+├── constants/
+│   └── playerMapConstants.ts    # Constants for player-map
+├── contexts/
+│   └── WalletContext.tsx         # Privy, Wagmi, React Query configuration
+├── components/
+│   └── PlayerMapView.tsx         # Component using GraphComponent
+├── App.tsx                        # Application entry point
+└── main.tsx                       # Main file (if Vite)
+
+.env                                # Environment variables
+package.json                       # Project dependencies
+```
+
+## Folder organization
+
+### `src/constants/`
+
+Contains configuration constants for `player-map`:
+
+- `playerMapConstants.ts`: Configuration of IDs, guilds, claims, etc.
+
+### `src/contexts/`
+
+Contains required React contexts:
+
+- `WalletContext.tsx`: Provider configuration (Privy, Wagmi, React Query)
+
+### `src/components/`
+
+Contains application components:
+
+- `PlayerMapView.tsx`: Main component integrating `GraphComponent` from `player-map`
+
+## Configuration files
+
+### `.env`
+
+File containing environment variables (should not be committed):
+
+- `VITE_PRIVY_APP_ID`
+- `VITE_PINATA_JWT_KEY`
+- `VITE_IPFS_GATEWAY`
+
+### `package.json`
+
+Contains project dependencies and build scripts.
+
+## Important points
+
+- **Separation of concerns**: Each file has a specific role
+- **Modular organization**: Facilitates maintenance and updates
+- **Centralized configuration**: Constants are grouped in a single file

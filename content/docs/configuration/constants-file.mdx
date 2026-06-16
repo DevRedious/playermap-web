@@ -1,0 +1,110 @@
+---
+title: 3.2 - Constants File
+description: Create playerMapConstants.ts to configure IDs, guilds and claims.
+---
+
+Create the constants file `playerMapConstants.ts` to configure `player-map`.
+
+## Create the file
+
+Create a file `src/constants/playerMapConstants.ts` with the following structure:
+
+```typescript
+// Common predicates used by player-map
+export const COMMON_IDS = {
+  GAMES_ID: "0x...", // Game ID (ex: Boss Fighters)
+  FOLLOWS: "0x...", // "follows" predicate ID
+  IS: "0x...", // "is" predicate ID
+  IS_PLAYER_OF: "0x...", // "is player of" predicate ID
+};
+
+// Player triple types
+export const PLAYER_TRIPLE_TYPES = {
+  PLAYER_GAME: {
+    predicateId: COMMON_IDS.IS_PLAYER_OF,
+    objectId: COMMON_IDS.GAMES_ID,
+  },
+  PLAYER_QUALITY_1: {
+    predicateId: COMMON_IDS.IS,
+    objectId: "0x...", // Quality ID (ex: fairplay)
+  },
+  PLAYER_QUALITY_2: {
+    predicateId: COMMON_IDS.IS,
+    objectId: "0x...", // Quality ID (ex: strong boss)
+  },
+  // ... other qualities
+  PLAYER_GUILD: {
+    predicateId: COMMON_IDS.IS_PLAYER_OF,
+    objectId: null, // Will be defined dynamically
+  },
+};
+
+// Official game guilds list
+export const OFFICIAL_GUILDS = [
+  { id: "0x...", name: "The Alchemists" },
+  { id: "0x...", name: "Big Time Warriors" },
+  // ... other guilds
+];
+
+// Predefined claim IDs for voting
+export const PREDEFINED_CLAIM_IDS = [
+  "0x...", // claim 1
+  "0x...", // claim 2
+  // ... other claims
+];
+
+// Pinata configuration (loaded from environment variables)
+export const PINATA_CONFIG = {
+  JWT_KEY: import.meta.env.VITE_PINATA_JWT_KEY,
+  IPFS_GATEWAY: import.meta.env.VITE_IPFS_GATEWAY,
+};
+
+// Export custom constants for PlayerMap
+export const CUSTOM_PLAYER_MAP_CONSTANTS = {
+  COMMON_IDS,
+  PLAYER_TRIPLE_TYPES,
+  OFFICIAL_GUILDS,
+  PREDEFINED_CLAIM_IDS,
+  PINATA_CONFIG,
+};
+```
+
+## Constants format
+
+### `COMMON_IDS`
+
+Contains the IDs of common predicates and terms:
+
+- `GAMES_ID`: ID of the term representing the game (ex: Boss Fighters)
+- `FOLLOWS`: ID of the "follows" predicate (follow relation)
+- `IS`: ID of the "is" predicate (attribute relation)
+- `IS_PLAYER_OF`: ID of the "is player of" predicate (player → game/guild relation)
+
+### `PLAYER_TRIPLE_TYPES`
+
+Structure: `{ predicateId: string, objectId: string | null }`
+
+- `PLAYER_GAME`: Triple identifying a game player
+- `PLAYER_QUALITY_X`: Triples identifying player qualities
+- `PLAYER_GUILD`: Triple identifying guild membership (objectId can be null)
+
+### `OFFICIAL_GUILDS`
+
+Structure: `{ id: string, name: string }[]`
+
+List of official guilds with their ID and name.
+
+### `PREDEFINED_CLAIM_IDS`
+
+Structure: `string[]`
+
+List of claim IDs available for voting.
+
+### `PINATA_CONFIG`
+
+- `JWT_KEY`: Pinata JWT key for IPFS upload (loaded from `VITE_PINATA_JWT_KEY`)
+- `IPFS_GATEWAY`: IPFS gateway URL (loaded from `VITE_IPFS_GATEWAY`)
+
+### `CUSTOM_PLAYER_MAP_CONSTANTS`
+
+Main export containing all constants configured for `player-map`.

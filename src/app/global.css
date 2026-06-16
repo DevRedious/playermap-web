@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+@plugin "@tailwindcss/typography";
+
+/* ── Player Map brand tokens ─────────────────────────────────────────────
+   Signature gold #ffd32a on a dark theme. See the design system reference at
+   ../Player-map/documentation/05-design-system.md */
+@theme {
+  --color-brand: #ffd32a;
+  --color-brand-strong: #ffed4e;
+  --color-vote-for: #006fe8;
+  --color-vote-against: #ff9500;
+}
+
+/* Tie the Fumadocs accent (links, active states) to the brand gold. */
+:root {
+  --color-fd-primary: #d9a600; /* darker gold for contrast on light surfaces */
+}
+.dark {
+  --color-fd-primary: #ffd32a; /* full gold on dark surfaces */
+}
+
+/* ── Fix .prose collision ────────────────────────────────────────────────
+   Fumadocs styles the docs content with its own `.prose` class
+   (theme-aware via the --color-fd-* tokens). The @tailwindcss/typography plugin
+   (used by the legal/blog pages with `prose prose-invert`) ALSO generates
+   `.prose` rules with its LIGHT palette by default → in dark mode, strong /
+   lists / inline code / headings become dark text on a dark background,
+   hence unreadable. We remap the typography variables onto the Fumadocs
+   tokens, ONLY for Fumadocs' `.prose` (`:not(.prose-invert)`),
+   without touching the legal/blog pages. */
+.prose:not(.prose-invert) {
+  --tw-prose-body: var(--color-fd-foreground);
+  --tw-prose-headings: var(--color-fd-foreground);
+  --tw-prose-lead: var(--color-fd-muted-foreground);
+  --tw-prose-links: var(--color-fd-primary);
+  --tw-prose-bold: var(--color-fd-foreground);
+  --tw-prose-counters: var(--color-fd-muted-foreground);
+  --tw-prose-bullets: var(--color-fd-muted-foreground);
+  --tw-prose-hr: var(--color-fd-border);
+  --tw-prose-quotes: var(--color-fd-foreground);
+  --tw-prose-quote-borders: var(--color-fd-border);
+  --tw-prose-captions: var(--color-fd-muted-foreground);
+  --tw-prose-code: var(--color-fd-foreground);
+  --tw-prose-pre-code: var(--color-fd-foreground);
+  --tw-prose-pre-bg: var(--color-fd-muted);
+  --tw-prose-th-borders: var(--color-fd-border);
+  --tw-prose-td-borders: var(--color-fd-border);
+  --tw-prose-kbd: var(--color-fd-foreground);
+}
+/* The typography plugin wraps inline code with literal backticks (`…`) via
+   ::before/::after — Fumadocs doesn't want them. We remove them. */
+.prose:not(.prose-invert) :where(code):not(:where([class~='not-prose'] *, [class~='not-prose']))::before,
+.prose:not(.prose-invert) :where(code):not(:where([class~='not-prose'] *, [class~='not-prose']))::after {
+  content: none;
+}
+/* Fumadocs wraps each heading's text in an anchor (permalink);
+   typography colors it as an underlined gold link. We let the heading win:
+   inherited color, no underline. */
+.prose:not(.prose-invert) :where(h1, h2, h3, h4, h5, h6) a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+/* Home navbar: make it fully transparent over the hero (no frost, no border)
+   while at the top. Fumadocs only adds `bg-fd-background/80` once it is NOT
+   transparent, so we target the transparent state by the absence of that class. */
+#nd-nav > div:not([class*='bg-fd-background']) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+/* Native scrollbar hidden — replaced by <CustomScrollbar /> (thin gold cursor). */
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Roadmap collapsibles: native marker hidden + rotating chevron. */
+.roadmap details > summary {
+  list-style: none;
+}
+.roadmap details > summary::-webkit-details-marker {
+  display: none;
+}
+.roadmap .chev {
+  transition: transform 0.2s ease;
+}
+/* Base = chevron pointing right (closed). Open → rotates downward. */
+.roadmap details[open] > summary .chev {
+  transform: rotate(90deg);
+}
+
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Scroll-triggered reveal micro-animations (<Reveal /> component). */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Theme-adaptive logo lockup (next-themes toggles the .dark class):
+   "light" variant (black text) on a light background, "dark" (white text) on a dark background. */
+.logo-themed--light {
+  display: block;
+}
+.logo-themed--dark {
+  display: none;
+}
+.dark .logo-themed--light {
+  display: none;
+}
+.dark .logo-themed--dark {
+  display: block;
+}
+
+/* Accessibility: disables animations/transitions for those who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

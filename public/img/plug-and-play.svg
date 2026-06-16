@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .stroke { fill: none; stroke: #FFD32A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .fill { fill: #FFD32A; }
+      .blink { animation: blink 0.8s steps(1,end) infinite; }
+      @keyframes blink { 0% {opacity:1} 50%{opacity:0} 100%{opacity:1} }
+    </style>
+    <!-- mask to reveal typing -->
+    <mask id="typeMask">
+      <rect x="14" y="64" width="0" height="14" fill="#fff">
+        <animate attributeName="width" values="0;120;0" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.6;1" />
+      </rect>
+    </mask>
+    <!-- gradient halo for connection click (subtle, flat-ish) -->
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#FFD32A" stop-opacity="0.35"/>
+      <stop offset="80%" stop-color="#FFD32A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Left screen (terminal) -->
+  <rect x="10" y="40" width="80" height="60" rx="6" class="stroke"/>
+  <rect x="10" y="40" width="80" height="8" class="stroke"/>
+  <circle cx="18" cy="44" r="1.5" class="fill"/>
+  <circle cx="24" cy="44" r="1.5" class="fill"/>
+  <circle cx="30" cy="44" r="1.5" class="fill"/>
+  <!-- "NPM INSTALL" typed line -->
+  <g mask="url(#typeMask)">
+    <text x="14" y="75" font-family="monospace" font-size="12" fill="#FFD32A">npm install</text>
+  </g>
+  <!-- caret -->
+  <rect x="14" y="64" width="6" height="14" class="fill blink">
+    <animate attributeName="x" values="14;134;14" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.6;1"/>
+  </rect>
+
+  <!-- Cable from left screen to right screen -->
+  <path class="stroke" d="M90,70 C110,70 120,100 140,100">
+    <animate attributeName="stroke-dasharray" values="0 200;200 200;0 200" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.6;1"/>
+    <animate attributeName="stroke-dashoffset" values="200;0;200" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.6;1"/>
+  </path>
+
+  <!-- Connection plug -->
+  <g>
+    <rect x="86" y="82" width="6" height="12" class="fill"/>
+    <rect x="92" y="80" width="4" height="16" class="fill"/>
+  </g>
+
+  <!-- Right screen (graph) -->
+  <rect x="110" y="30" width="80" height="80" rx="6" class="stroke"/>
+  <rect x="110" y="30" width="80" height="8" class="stroke"/>
+
+  <!-- Node graph (revealed) -->
+  <g>
+    <!-- edges -->
+    <path class="stroke" d="M150,60 L168,48">
+      <animate attributeName="stroke-dasharray" values="0 40;40 40" dur="1.2s" begin="1.5s" fill="freeze" />
+      <animate attributeName="stroke-dasharray" values="0 40;40 40;0 40" dur="3.5s" repeatCount="indefinite" />
+    </path>
+    <path class="stroke" d="M150,60 L132,52">
+      <animate attributeName="stroke-dasharray" values="0 40;40 40;0 40" dur="3.5s" repeatCount="indefinite" begin="0.2s"/>
+    </path>
+    <path class="stroke" d="M150,60 L155,77">
+      <animate attributeName="stroke-dasharray" values="0 40;40 40;0 40" dur="3.5s" repeatCount="indefinite" begin="0.4s"/>
+    </path>
+
+    <!-- nodes -->
+    <circle cx="150" cy="60" r="3" class="fill">
+      <animate attributeName="r" values="2.5;3.5;2.5" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="168" cy="48" r="2.5" class="fill">
+      <animate attributeName="opacity" values="0;1;0.7;1;0" dur="3.5s" repeatCount="indefinite" begin="0.3s"/>
+    </circle>
+    <circle cx="132" cy="52" r="2.5" class="fill">
+      <animate attributeName="opacity" values="0;1;0.7;1;0" dur="3.5s" repeatCount="indefinite" begin="0.6s"/>
+    </circle>
+    <circle cx="155" cy="77" r="2.5" class="fill">
+      <animate attributeName="opacity" values="0;1;0.7;1;0" dur="3.5s" repeatCount="indefinite" begin="0.9s"/>
+    </circle>
+  </g>
+
+  <!-- subtle halo when connection completes -->
+  <circle cx="140" cy="100" r="0" fill="url(#halo)">
+    <animate attributeName="r" values="0;20;0" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.6;1"/>
+  </circle>
+</svg>

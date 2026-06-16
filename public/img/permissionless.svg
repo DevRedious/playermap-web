@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .stroke { fill: none; stroke: #FFD32A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .fill { fill: #FFD32A; }
+    </style>
+  </defs>
+
+  <!-- core node -->
+  <circle cx="100" cy="100" r="3" class="fill">
+    <animate attributeName="r" values="2;3.5;2" dur="3.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- edges + nodes appear asynchronously -->
+  <g>
+    <!-- edge 1 -->
+    <path class="stroke" d="M100,100 L135,80">
+      <animate attributeName="stroke-dasharray" values="0 60;60 60" dur="1s" begin="0.3s" fill="freeze"/>
+      <animate attributeName="stroke-dasharray" values="0 60;60 60;0 60" dur="3.5s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="135" cy="80" r="0" class="fill">
+      <animate attributeName="r" values="0;3;2.5;3;0" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- edge 2 -->
+    <path class="stroke" d="M100,100 L70,70">
+      <animate attributeName="stroke-dasharray" values="0 60;60 60;0 60" dur="3.5s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="70" cy="70" r="0" class="fill">
+      <animate attributeName="r" values="0;3;2.5;3;0" dur="3.5s" begin="0.9s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- edge 3 -->
+    <path class="stroke" d="M100,100 L120,130">
+      <animate attributeName="stroke-dasharray" values="0 60;60 60;0 60" dur="3.5s" begin="0.9s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="120" cy="130" r="0" class="fill">
+      <animate attributeName="r" values="0;3;2.5;3;0" dur="3.5s" begin="1.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- edge 4 -->
+    <path class="stroke" d="M100,100 L60,120">
+      <animate attributeName="stroke-dasharray" values="0 70;70 70;0 70" dur="3.5s" begin="1.2s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="60" cy="120" r="0" class="fill">
+      <animate attributeName="r" values="0;3;2.5;3;0" dur="3.5s" begin="1.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- edge 5 -->
+    <path class="stroke" d="M100,100 L155,115">
+      <animate attributeName="stroke-dasharray" values="0 80;80 80;0 80" dur="3.5s" begin="1.5s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="155" cy="115" r="0" class="fill">
+      <animate attributeName="r" values="0;3;2.5;3;0" dur="3.5s" begin="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

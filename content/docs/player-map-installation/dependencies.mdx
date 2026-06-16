@@ -1,0 +1,43 @@
+---
+title: 2.2 - Required Dependencies
+description: The dependencies player-map needs and how to resolve version conflicts.
+---
+
+`player-map` requires certain dependencies to work properly.
+
+## Main dependencies
+
+These dependencies are required for `player-map` to function. Refer to the
+[Prerequisites](/docs/prerequisites/app-requirements) section for installation
+instructions.
+
+### React and React DOM
+
+**Version required**: ^18.3.1
+
+### Privy (Wallet authentication)
+
+**Version required**: ^2.13.0
+
+### Wagmi and Viem (Web3)
+
+**Versions required**:
+
+- `wagmi`: ^2.15.2
+- `viem`: ^2.28.4
+
+### React Query
+
+**Version required**: ^5.90.2
+
+### 3D Force Graph VR
+
+**Version required**: ^3.1.1
+
+## Conflict resolution
+
+If you encounter version conflicts:
+
+1. Check compatible versions in each package's documentation
+2. Use `pnpm update` to update dependencies
+3. Refer to the [Troubleshooting](/docs/troubleshooting/environment-variables) section if needed

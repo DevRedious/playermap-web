@@ -1,0 +1,211 @@
+---
+title: 3.4 - Using PlayerMapView
+description: Integrate GraphComponent from player-map through a PlayerMapView component.
+---
+
+Create the `PlayerMapView.tsx` component to integrate `GraphComponent` from
+`player-map`.
+
+## Create the file
+
+Create a file `src/components/PlayerMapView.tsx`:
+
+```typescript
+import { GraphComponent, setPinataConstants } from "player-map";
+import { usePrivy } from "@privy-io/react-auth";
+import { useState, useEffect } from "react";
+import {
+  useAccount,
+  useConnect,
+  usePublicClient,
+  useWalletClient,
+} from "wagmi";
+import { CUSTOM_PLAYER_MAP_CONSTANTS } from "../constants/playerMapConstants";
+
+export default function PlayerMapView() {
+  const { user, ready, login, logout } = usePrivy();
+  const [isPlayerCreationOpen, setIsPlayerCreationOpen] = useState(false);
+
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
+  const account = useAccount();
+
+  // Initialize Pinata constants for player-map
+  useEffect(() => {
+    setPinataConstants(CUSTOM_PLAYER_MAP_CONSTANTS);
+    console.log("Player-map Pinata constants initialized");
+  }, []);
+
+  // Handlers for modals
+  const handleOpenPlayerCreation = () => {
+    setIsPlayerCreationOpen(true);
+  };
+
+  const handleClosePlayerCreation = () => {
+    setIsPlayerCreationOpen(false);
+  };
+
+  // Fallback if walletClient is null
+  const effectiveWalletClient = walletClient || {
+    account: {
+      address: user?.wallet?.address,
+    },
+    writeContract: async () => {
+      throw new Error("No wallet client available for transactions");
+    },
+    readContract: async () => {
+      throw new Error("No wallet client available for reading contracts");
+    },
+    waitForTransactionReceipt: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      return {};
+    },
+  };
+
+  // Common props for GraphComponent
+  const commonProps = {
+    walletConnected: effectiveWalletClient,
+    walletAddress: user?.wallet?.address,
+    publicClient: publicClient,
+    wagmiConfig: {
+      publicClient,
+      walletClient: effectiveWalletClient,
+    },
+    walletHooks: {
+      useAccount,
+      useConnect,
+      useWalletClient,
+      usePublicClient,
+    },
+  };
+
+  // Wallet connection handler
+  const handleConnectWallet = () => {
+    login();
+  };
+
+  if (!ready) {
+    return <div>Loading wallet state...</div>;
+  }
+
+  return (
+    <div className="w-[80vw] mx-auto flex flex-col min-h-screen">
+      <div className="relative h-screen w-full">
+        <GraphComponent
+          {...commonProps}
+          onCreatePlayer={handleOpenPlayerCreation}
+          onConnectWallet={handleConnectWallet}
+          config={{
+            constants: CUSTOM_PLAYER_MAP_CONSTANTS,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## Initialize constants
+
+⚠️ **Important**: Call `setPinataConstants()` in a `useEffect` before using
+`GraphComponent`:
+
+```typescript
+useEffect(() => {
+  setPinataConstants(CUSTOM_PLAYER_MAP_CONSTANTS);
+}, []);
+```
+
+## Props configuration
+
+### `commonProps`
+
+Common properties passed to `GraphComponent`:
+
+- `walletConnected`: Wallet client (Wagmi or fallback)
+- `walletAddress`: Connected wallet address
+- `publicClient`: Public Viem client
+- `wagmiConfig`: Wagmi configuration
+- `walletHooks`: Required Wagmi hooks
+
+### `config`
+
+Configuration for `GraphComponent`:
+
+- `constants`: Custom constants (`CUSTOM_PLAYER_MAP_CONSTANTS`)
+
+### Events
+
+#### `onCreatePlayer`
+
+Callback called when a player is created. This event is triggered when the user
+clicks the "Create Your Player" button in the Player Map interface.
+
+**Example usage**:
+
+```typescript
+const handleOpenPlayerCreation = () => {
+  setIsPlayerCreationOpen(true);
+  // Open your player creation modal or navigate to player creation page
+};
+
+<GraphComponent
+  {...commonProps}
+  onCreatePlayer={handleOpenPlayerCreation}
+  // ...
+/>;
+```
+
+In the example above, `handleOpenPlayerCreation` is called when the user
+initiates player creation, allowing you to open a modal or navigate to a player
+creation page.
+
+#### `onConnectWallet`
+
+Callback called when the wallet connection is requested. This event is triggered
+when the user clicks the "Connect Wallet" button in the Player Map interface.
+
+**Example usage**:
+
+```typescript
+const handleConnectWallet = () => {
+  login(); // Privy login method
+  // Or trigger your custom wallet connection logic
+};
+
+<GraphComponent
+  {...commonProps}
+  onConnectWallet={handleConnectWallet}
+  // ...
+/>;
+```
+
+In the example above, `handleConnectWallet` is called when the user requests
+wallet connection, allowing you to trigger the Privy login flow or your custom
+wallet connection logic.
+
+## Integration in the app
+
+Use `PlayerMapView` in your application:
+
+```typescript
+import { PrivyWalletProvider } from "./contexts/WalletContext";
+import PlayerMapView from "./components/PlayerMapView";
+
+function App() {
+  return (
+    <PrivyWalletProvider>
+      <PlayerMapView />
+    </PrivyWalletProvider>
+  );
+}
+```
+
+## Important points
+
+1. **Container Height**: The parent container must have a defined height
+   (`h-screen` or `height: 100vh`)
+2. **Pinata Initialization**: Don't forget to call `setPinataConstants()` before
+   using `GraphComponent`
+3. **Environment Variables**: Make sure the `VITE_*` variables are defined in your
+   `.env`

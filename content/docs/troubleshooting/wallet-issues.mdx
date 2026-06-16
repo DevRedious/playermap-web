@@ -1,0 +1,149 @@
+---
+title: 4.3 - Wallet Issues
+description: Diagnose a wallet that won't connect or stays inaccessible after login.
+---
+
+If you encounter wallet-related problems, here are the solutions.
+
+## Problem: Wallet does not connect
+
+**Symptoms**:
+
+- Wallet does not connect when clicking "Connect Wallet"
+- Console errors related to Wagmi or Privy
+- Connected wallet is not accessible
+
+## Solutions
+
+### 1. Check Wagmi configuration
+
+Verify that your Wagmi configuration is correct in `WalletContext.tsx`:
+
+```typescript
+const wagmiConfig = createConfig({
+  chains: [intuitionTestnetChain],
+  transports: {
+    [intuitionTestnetChain.id]: http(),
+  },
+});
+```
+
+### 2. Check configured chains
+
+Make sure the required chains are properly configured:
+
+- **Intuition Testnet**: The only chain configured for `player-map`
+
+### 3. Check Privy configuration
+
+Verify that `PrivyProvider` is properly configured:
+
+```typescript
+<PrivyProvider
+  appId={import.meta.env.VITE_PRIVY_APP_ID}
+  config={{
+    embeddedWallets: {
+      createOnLogin: "users-without-wallets",
+      requireUserPasswordOnCreate: false,
+      showWalletUIs: true,
+    },
+    loginMethods: ["wallet", "email", "google", "twitter"],
+    appearance: {
+      theme: "dark",
+      showWalletLoginFirst: true,
+    },
+  }}
+>
+```
+
+### 4. Check that the wallet is properly wrapped
+
+Make sure your application is wrapped with `PrivyWalletProvider`:
+
+```typescript
+function App() {
+  return (
+    <PrivyWalletProvider>
+      <PlayerMapView />
+    </PrivyWalletProvider>
+  );
+}
+```
+
+### 5. Check Wagmi hooks
+
+Make sure Wagmi hooks are correctly used in `PlayerMapView.tsx`:
+
+```typescript
+const { data: walletClient } = useWalletClient();
+const publicClient = usePublicClient();
+const account = useAccount();
+```
+
+### 6. Check console errors
+
+Check the browser console for specific errors:
+
+- Wagmi errors
+- Privy errors
+- Network errors
+
+### 7. Check network connection
+
+Make sure the RPC endpoints are accessible:
+
+```typescript
+rpcUrls: {
+  default: {
+    http: ["https://testnet.rpc.intuition.systems"],
+  },
+}
+```
+
+### 8. Check the fallback walletClient
+
+If `walletClient` is `null`, make sure the fallback is properly configured:
+
+```typescript
+const effectiveWalletClient = walletClient || {
+  account: {
+    address: user?.wallet?.address,
+  },
+  // ... fallback methods
+};
+```
+
+## Problem: Wallet connected but not accessible
+
+**Symptoms**:
+
+- Wallet is connected but `walletAddress` is `null` or `undefined`
+- Transactions do not work
+
+## Solutions
+
+### 1. Check `user?.wallet?.address`
+
+Make sure the wallet address is accessible:
+
+```typescript
+const walletAddress = user?.wallet?.address;
+```
+
+### 2. Check that `ready` is `true`
+
+In `PlayerMapView.tsx`, verify that Privy is ready before using the wallet:
+
+```typescript
+if (!ready) {
+  return <div>Loading wallet state...</div>;
+}
+```
+
+## Support
+
+If the problem persists:
+
+1. Check the [Wagmi documentation](https://wagmi.sh)
+2. Check the [Privy documentation](https://docs.privy.io)
+3. Contact us on [Discord](https://discord.com/invite/52mKT9g8NB)

@@ -1,0 +1,70 @@
+---
+title: 4.1 - Environment Variables Not Loaded
+description: Fix VITE_ variables returning undefined during development.
+---
+
+If environment variables are not loaded correctly, here are the solutions.
+
+## Problem: Variables not accessible
+
+**Symptoms**:
+
+- `import.meta.env.VITE_*` variables return `undefined`
+- Console errors indicating missing variables
+
+## Solutions
+
+### 1. Check the `VITE_` prefix
+
+⚠️ **All environment variables must be prefixed with `VITE_` to be accessible in Vite code.**
+
+❌ **Incorrect**:
+
+```ini
+PRIVY_APP_ID=your_app_id
+```
+
+✅ **Correct**:
+
+```ini
+VITE_PRIVY_APP_ID=your_app_id
+```
+
+### 2. Restart the development server
+
+After modifying the `.env` file, **you must restart your development server**:
+
+```bash
+# Stop the server (Ctrl+C)
+# Then restart it
+pnpm dev
+```
+
+### 3. Check the `.env` file location
+
+The `.env` file must be at the **root of your project**, at the same level as
+`package.json`:
+
+```
+project/
+├── .env              ← Here
+├── package.json
+├── src/
+└── ...
+```
+
+### 4. Check the `.env` file format
+
+The `.env` file must follow this format:
+
+```ini
+VITE_PRIVY_APP_ID=your_app_id
+VITE_PINATA_JWT_KEY=your_jwt_key
+VITE_IPFS_GATEWAY=gateway.pinata.cloud
+```
+
+**Important points**:
+
+- No spaces around the `=`
+- No quotes around values (unless necessary)
+- No comments on the same line as variables

@@ -1,0 +1,79 @@
+---
+title: 4.2 - Privy App ID Error
+description: Resolve "Cannot initialize the Privy provider with an invalid Privy app ID".
+---
+
+If you encounter a Privy-related error, here are the solutions.
+
+## Problem: "Cannot initialize the Privy provider with an invalid Privy app ID"
+
+**Symptoms**:
+
+- Console error: `Cannot initialize the Privy provider with an invalid Privy app ID`
+- Application does not load properly
+- Wallet cannot connect
+
+## Solutions
+
+### 1. Check that `VITE_PRIVY_APP_ID` is defined
+
+Check that the `VITE_PRIVY_APP_ID` variable is defined in your `.env` file:
+
+```ini
+VITE_PRIVY_APP_ID=your_privy_app_id_here
+```
+
+### 2. Check that the ID matches your Privy application
+
+1. Log in to [Privy Dashboard](https://dashboard.privy.io)
+2. Select your application
+3. Copy the **App ID** from the dashboard
+4. Verify it matches the one in your `.env`
+
+### 3. Check the ID format
+
+The Privy App ID should have the following format:
+
+- Usually starts with `cl` (for new applications)
+- Example: `clxxxxxxxxxxxxxxxxxxxxx`
+
+### 4. Restart the development server
+
+After modifying the `.env` file, **restart your development server**:
+
+```bash
+# Stop the server (Ctrl+C)
+# Then restart it
+pnpm dev
+```
+
+### 5. Check that the ID is not empty
+
+Make sure the ID is not empty or malformed.
+
+### 6. Check PrivyProvider configuration
+
+In your `WalletContext.tsx`, verify that `PrivyProvider` uses the environment
+variable:
+
+```typescript
+<PrivyProvider
+  appId={import.meta.env.VITE_PRIVY_APP_ID}
+  config={{
+    // ... configuration
+  }}
+>
+```
+
+### 7. Check build errors
+
+If building for production, make sure environment variables are properly injected
+during the build (see the [Environment Variables](/docs/configuration/environment-variables) section).
+
+## Support
+
+If the problem persists:
+
+1. Check the [Privy documentation](https://docs.privy.io)
+2. Contact Privy support if needed
+3. Contact us on [Discord](https://discord.com/invite/52mKT9g8NB)

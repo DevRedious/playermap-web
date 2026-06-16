@@ -1,0 +1,10 @@
+{
+	"title": "Player Map",
+	"pages": [
+		"index",
+		"prerequisites",
+		"player-map-installation",
+		"configuration",
+		"troubleshooting"
+	]
+}
