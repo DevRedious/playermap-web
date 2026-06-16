@@ -87,11 +87,14 @@ export const metadata: Metadata = {
 		siteName: appName,
 		url: "/",
 		type: "website",
+		// Static social-share image (resolved to an absolute URL via metadataBase).
+		images: [{ url: "/og-agent.png", width: 1200, height: 630, alt: appName }],
 	},
 	twitter: {
 		card: "summary_large_image",
 		title: appName,
 		description: appDescription,
+		images: ["/og-agent.png"],
 	},
 };
 
