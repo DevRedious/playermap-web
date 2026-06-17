@@ -75,7 +75,7 @@ export default function OpenSourcePage() {
 				</p>
 			</div>
 
-			{/* Values — the agent-dark.svg logo serves as the letter “A” */}
+			{/* Values: the agent-dark.svg logo serves as the letter “A” */}
 			<div className="mt-12 grid gap-6 md:grid-cols-2">
 				<ValueBlock
 					heading={
@@ -93,7 +93,7 @@ export default function OpenSourcePage() {
 					<p>Why should we recommend inclusion without doing it ourselves?</p>
 					<p>
 						This way, we can be sure of having a panel of users who will really
-						be able to respond to the studios’ problems — naturally, by giving
+						be able to respond to the studios’ problems: naturally, by giving
 						importance and power to each “atom”.
 					</p>
 				</ValueBlock>
@@ -132,13 +132,13 @@ export default function OpenSourcePage() {
 					<p>
 						Innovation rarely happens in isolation. By being open source we
 						invite a global community of developers, analysts and product
-						engineers to help us improve — to build features we haven’t thought
+						engineers to help us improve, to build features we haven’t thought
 						of, fix bugs we haven’t caught, and tackle use cases we haven’t
 						seen.
 					</p>
 					<p>
 						That’s the beauty of open source: it turns users into collaborators,
-						and lets unique problems find unique solutions — often shared back.
+						and lets unique problems find unique solutions, often shared back.
 					</p>
 				</ValueBlock>
 

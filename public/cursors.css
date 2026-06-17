@@ -1,4 +1,4 @@
-/* Curseurs custom (thème « dark ») — uniquement les curseurs utiles au web.
+/* Curseurs custom (thème « dark »), uniquement les curseurs utiles au web.
    Servi en statique depuis /public pour que les `url()` ne soient pas
    supprimées par le pipeline CSS (Lightning CSS / Turbopack). */
 html {

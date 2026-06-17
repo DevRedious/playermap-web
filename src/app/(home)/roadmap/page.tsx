@@ -1,12 +1,16 @@
-import type { ReactNode } from "react";
 import { RoadmapTabs } from "@/components/roadmap-tabs";
+import {
+	type Category,
+	type Status,
+	y2025,
+	y2026,
+	y2027,
+} from "./roadmap-data";
 
 export const metadata = {
 	title: "Roadmap",
-	description: "Roadmap Agent Studio — what’s coming next.",
+	description: "Roadmap Agent Studio: what’s coming next.",
 };
-
-type Status = "completed" | "dev" | "not-started";
 
 const BADGE: Record<Status, { label: string; cls: string }> = {
 	completed: {
@@ -22,14 +26,6 @@ const BADGE: Record<Status, { label: string; cls: string }> = {
 		cls: "border-white/15 bg-white/5 text-white/50",
 	},
 };
-
-type Item = {
-	title: string;
-	status: Status;
-	statusLabel?: string;
-	description: ReactNode;
-};
-type Category = { name: string; items: Item[] };
 
 function Chevron() {
 	return (
@@ -61,11 +57,10 @@ function Badge({ status, label }: { status: Status; label?: string }) {
 
 function CategoryBlock({ name, items }: Category) {
 	return (
-		<details className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
-			<summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-base font-bold text-white">
-				<Chevron />
+		<div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
+			<div className="flex items-center gap-2 px-4 py-3 text-base font-bold text-white">
 				{name}
-			</summary>
+			</div>
 			<div className="space-y-1 px-2 pb-3 sm:px-3">
 				{items.map((it) => (
 					<details
@@ -87,7 +82,7 @@ function CategoryBlock({ name, items }: Category) {
 					</details>
 				))}
 			</div>
-		</details>
+		</div>
 	);
 }
 
@@ -100,156 +95,6 @@ function Year({ categories }: { categories: Category[] }) {
 		</div>
 	);
 }
-
-const y2025: Category[] = [
-	{
-		name: "Player Map",
-		items: [
-			{
-				title: "Graph visualization component — Player Map v1",
-				status: "completed",
-				description: (
-					<>
-						Your gaming graph, built on trust and attestations, plugged on Base
-						Mainnet (
-						<a
-							href="https://devfolio.co/projects/agent-player-map-759e"
-							target="_blank"
-							rel="noreferrer noopener"
-							className="text-brand hover:underline"
-						>
-							Base Batch Europe
-						</a>
-						).
-					</>
-				),
-			},
-			{
-				title: "Game Feedback component",
-				status: "completed",
-				description:
-					"Attestations batch for players to give game feedback to game studios.",
-			},
-			{
-				title: "Player Map website",
-				status: "completed",
-				description: "Installation guide and Player Map demo integration.",
-			},
-		],
-	},
-	{
-		name: "Dashboard",
-		items: [
-			{
-				title: "Coming Soon",
-				status: "not-started",
-				description:
-					"This section is under construction. Please check back soon for updates.",
-			},
-		],
-	},
-];
-
-const y2026: Category[] = [
-	{
-		name: "Player Map",
-		items: [
-			{
-				title: "Query optimization",
-				status: "completed",
-				description:
-					"Reduction in the number of requests and loading time divided by 10.",
-			},
-			{
-				title: "UX-UI rework — Player Map v2",
-				status: "completed",
-				description:
-					"Redesign to be more intuitive, accessible, and aligned with how players actually explore data and give feedback on game elements.",
-			},
-			{
-				title: "Discord Activity",
-				status: "dev",
-				description: (
-					<>
-						- Player Map can be used on Discord as an app.
-						<br />- Initialization of the account abstraction.
-						<br />
-						<span className="text-white/40">(waiting for approval)</span>
-					</>
-				),
-			},
-			{
-				title: "Gamification",
-				status: "not-started",
-				description:
-					"The ultimate player experience to be engaged in the game ecosystem.",
-			},
-		],
-	},
-	{
-		name: "Dashboard",
-		items: [
-			{
-				title: "Player-first game score",
-				status: "completed",
-				description:
-					"Define and validate a player-first game score dynamic, including a categorization of attestations that provide added value to game studios.",
-			},
-			{
-				title: "Player Map statistics",
-				status: "completed",
-				description:
-					"Player Map data metrics for game studios and Player Map data analytics for Agent Studio.",
-			},
-			{
-				title: "Global game statistics",
-				status: "completed",
-				description:
-					"Real-time gaming ecosystem data analytics for game studios.",
-			},
-			{
-				title: "Game statistics",
-				status: "completed",
-				description: "Real-time game data analytics for game studios.",
-			},
-			{
-				title: "Campaigns",
-				status: "not-started",
-				description:
-					"Create campaigns with selected attestations for a game community over a given period, to better align with the stages of video game development.",
-			},
-		],
-	},
-	{
-		name: "Game tooling",
-		items: [
-			{
-				title: "Web2 game community app",
-				status: "not-started",
-				description:
-					"This section is under construction with a AAA studio. Please check back soon for updates.",
-			},
-		],
-	},
-];
-
-const comingSoon = (name: string): Category => ({
-	name,
-	items: [
-		{
-			title: "Coming Soon",
-			status: "not-started",
-			description:
-				"This section is under construction. Please check back soon for updates.",
-		},
-	],
-});
-
-const y2027: Category[] = [
-	comingSoon("Player Map"),
-	comingSoon("Dashboard"),
-	comingSoon("Game tooling"),
-];
 
 export default function RoadmapPage() {
 	return (

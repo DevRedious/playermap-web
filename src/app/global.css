@@ -50,7 +50,7 @@
   --tw-prose-kbd: var(--color-fd-foreground);
 }
 /* The typography plugin wraps inline code with literal backticks (`…`) via
-   ::before/::after — Fumadocs doesn't want them. We remove them. */
+   ::before/::after, Fumadocs doesn't want them. We remove them. */
 .prose:not(.prose-invert) :where(code):not(:where([class~='not-prose'] *, [class~='not-prose']))::before,
 .prose:not(.prose-invert) :where(code):not(:where([class~='not-prose'] *, [class~='not-prose']))::after {
   content: none;
@@ -73,7 +73,7 @@
   border-bottom-color: transparent;
 }
 
-/* Native scrollbar hidden — replaced by <CustomScrollbar /> (thin gold cursor). */
+/* Native scrollbar hidden, replaced by <CustomScrollbar /> (thin gold cursor). */
 html,
 body {
   scrollbar-width: none; /* Firefox */

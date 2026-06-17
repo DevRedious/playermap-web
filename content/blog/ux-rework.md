@@ -1,6 +1,6 @@
 ---
 title: UX Rework
-description: A major UX overhaul of the Player Map — clearer structure, better readability, a reworked attestations panel, and a more player-centric experience.
+description: A major UX overhaul of the Player Map, clearer structure, better readability, a reworked attestations panel, and a more player-centric experience.
 date: 2026-03-18
 author: omiage
 image: /img/blog/playermap_rework.jpg
@@ -47,7 +47,7 @@ After workshops with game studios to align with their needs, we redesigned our a
 
 ## 🌍 Why it matters
 
-Player Map is not just a visualization tool — it's a social and feedback graph for gaming.
+Player Map is not just a visualization tool, it's a social and feedback graph for gaming.
 
 This UX rework brings us closer to our vision:
 
@@ -60,4 +60,4 @@ This UX rework brings us closer to our vision:
 - 🎯 Dashboard for studios
 - 🎯 More AI-powered insights from the graph
 
-We'd love your feedback 🙌 — what do you think about the new experience?
+We'd love your feedback 🙌, what do you think about the new experience?

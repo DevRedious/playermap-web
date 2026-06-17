@@ -10,4 +10,4 @@ Player Map is appealing to players because it allows them to express themselves 
 
 They begin by creating their profile and preferences as gamers, publicly available within the ecosystem through on-chain attestations.
 
-**We are looking for gaming partners. If you represent a studio or a gaming community, or want to contribute to this building adventure and improve the Player Map — join us!**
+**We are looking for gaming partners. If you represent a studio or a gaming community, or want to contribute to this building adventure and improve the Player Map, join us!**

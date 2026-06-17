@@ -53,7 +53,7 @@ export function Hero() {
 			// from the original) so it truly fills the screen.
 			className="relative -mt-14 flex h-[100svh] items-center justify-center overflow-hidden bg-black text-white"
 		>
-			{/* Background video — poster shown instantly, video loaded afterwards. */}
+			{/* Background video, poster shown instantly, video loaded afterwards. */}
 			<video
 				ref={videoRef}
 				autoPlay
@@ -77,12 +77,6 @@ export function Hero() {
 					transition: "opacity 0.2s linear, transform 0.2s linear",
 				}}
 			>
-				{/* The diamond: square rotated 45°, golden border, dark background — BEHIND the content */}
-				<div
-					aria-hidden
-					className="pointer-events-none absolute left-1/2 top-1/2 -z-10 hidden h-[55vh] w-[55vh] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[25px] border-2 border-brand bg-black/60 md:block"
-				/>
-
 				{/* eslint-disable-next-line @next/next/no-img-element */}
 				<img
 					src="/img/agent-dark.svg"

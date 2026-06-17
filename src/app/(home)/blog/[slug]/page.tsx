@@ -83,18 +83,24 @@ export default async function PostPage({
 				<ShareButton title={post.title} />
 			</div>
 
-			{post.image && (
-				<div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-xl border border-white/10">
+			{post.image &&
+				(post.imageWidth && post.imageHeight ? (
 					<Image
 						src={post.image}
 						alt=""
-						fill
+						width={post.imageWidth}
+						height={post.imageHeight}
 						priority
 						sizes="(min-width: 768px) 768px, 100vw"
-						className="object-cover"
+						className="mt-8 h-auto w-full rounded-xl border border-white/10"
 					/>
-				</div>
-			)}
+				) : (
+					<img
+						src={post.image}
+						alt=""
+						className="mt-8 h-auto w-full rounded-xl border border-white/10"
+					/>
+				))}
 
 			<div className="prose prose-invert mt-8 max-w-none prose-headings:text-white prose-a:text-brand prose-a:no-underline hover:prose-a:underline prose-strong:text-white prose-blockquote:border-brand prose-blockquote:text-white/80">
 				<Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown>

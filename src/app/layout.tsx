@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
-	title: { default: appName, template: `%s — ${appName}` },
+	title: { default: appName, template: `%s | ${appName}` },
 	description: appDescription,
 	applicationName: appName,
 	// Themed manifest: wired up manually via <link media> (see <head> below),
@@ -117,7 +117,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
 					href="/site-dark.webmanifest"
 					media="(prefers-color-scheme: dark)"
 				/>
-				{/* Custom cursors — static file (outside the CSS pipeline) */}
+				{/* Custom cursors, static file (outside the CSS pipeline) */}
 				<link rel="stylesheet" href="/cursors.css" precedence="default" />
 				<RootProvider theme={{ forcedTheme: "dark" }}>
 					{children}

@@ -82,7 +82,7 @@ export function Footer() {
 						<BrandLogo className="h-7 w-auto" fixed="dark" />
 					</Link>
 					<p className="mt-3 max-w-xs text-sm text-white/50">
-						Open Source Player graph — a social &amp; feedback graph for gaming.
+						Open Source Player graph, a social &amp; feedback graph for gaming.
 					</p>
 					<div className="mt-5 flex gap-3">
 						<SocialIcon href={socialLinks.discord} label="Discord">

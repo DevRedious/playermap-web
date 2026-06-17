@@ -27,9 +27,49 @@ export type Post = {
 	description?: string;
 	date: string; // 'YYYY-MM-DD'
 	image?: string;
+	/** Natural pixel size of `image`, read from the file so it renders uncropped. */
+	imageWidth?: number;
+	imageHeight?: number;
 	author?: Author;
 	content: string;
 };
+
+/** Read the intrinsic dimensions of a JPEG/PNG that lives under /public. */
+function getImageSize(
+	publicPath: string,
+): { width: number; height: number } | undefined {
+	try {
+		const file = path.join(process.cwd(), "public", publicPath);
+		const buf = fs.readFileSync(file);
+
+		// PNG: 16-byte signature + IHDR width/height as big-endian uint32.
+		if (buf.length > 24 && buf.toString("ascii", 12, 16) === "IHDR") {
+			return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+		}
+
+		// JPEG: walk segments until a Start-Of-Frame marker (SOF0–SOF3).
+		if (buf[0] === 0xff && buf[1] === 0xd8) {
+			let off = 2;
+			while (off < buf.length) {
+				if (buf[off] !== 0xff) {
+					off++;
+					continue;
+				}
+				const marker = buf[off + 1];
+				if (marker >= 0xc0 && marker <= 0xc3) {
+					return {
+						height: buf.readUInt16BE(off + 5),
+						width: buf.readUInt16BE(off + 7),
+					};
+				}
+				off += 2 + buf.readUInt16BE(off + 2);
+			}
+		}
+	} catch {
+		// Missing or unreadable file: fall back to no dimensions.
+	}
+	return undefined;
+}
 
 function normalizeDate(value: unknown): string {
 	if (value instanceof Date) return value.toISOString().slice(0, 10);
@@ -41,13 +81,17 @@ function readPostFile(file: string): Post {
 	const raw = fs.readFileSync(path.join(BLOG_DIR, file), "utf8");
 	const { data, content } = matter(raw);
 	const authorKey = typeof data.author === "string" ? data.author : undefined;
+	const image = typeof data.image === "string" ? data.image : undefined;
+	const size = image ? getImageSize(image) : undefined;
 	return {
 		slug,
 		title: typeof data.title === "string" ? data.title : slug,
 		description:
 			typeof data.description === "string" ? data.description : undefined,
 		date: normalizeDate(data.date),
-		image: typeof data.image === "string" ? data.image : undefined,
+		image,
+		imageWidth: size?.width,
+		imageHeight: size?.height,
 		author: authorKey ? authors[authorKey] : undefined,
 		content,
 	};

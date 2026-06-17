@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const MIN_THUMB = 40; // px — minimum thumb height to stay grabbable
+const MIN_THUMB = 40; // px, minimum thumb height to stay grabbable
 const IDLE_MS = 1200; // idle delay before fading out
 
 /**
